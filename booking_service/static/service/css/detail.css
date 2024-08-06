@@ -1,0 +1,39 @@
+.card {
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.card-title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.card-subtitle {
+    font-size: 1.25rem;
+}
+
+.card-text {
+    margin-bottom: 10px;
+}
+
+@media (max-width: 767.98px) {
+    .card {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+    }
+
+    .card-subtitle {
+        font-size: 1rem;
+    }
+}

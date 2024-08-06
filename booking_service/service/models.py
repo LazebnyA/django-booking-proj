@@ -1,7 +1,15 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
 from django.utils.text import slugify
+
+
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super().get_queryset().filter(status=Service.Status.PUBLISHED)
+        )
 
 
 class Service(models.Model):
@@ -29,6 +37,9 @@ class Service(models.Model):
         default=Status.DRAFT,
         max_length=2
     )
+
+    objects = models.Manager()
+    published_objects = PublishedManager()
 
     class Meta:
         db_table = 'service'

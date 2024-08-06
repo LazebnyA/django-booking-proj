@@ -1,9 +1,10 @@
 from django.urls import path
 
-from .views import index
+from service import views
 
 app_name = 'service'
 
 urlpatterns = [
-    path('', index, name='index'),
+    path('', views.service_list, name='service_list'),
+    path('<int:pk>/', views.service_detail, name='service_detail'),
 ]

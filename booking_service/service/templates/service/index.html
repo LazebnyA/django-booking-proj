@@ -1,52 +1,29 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block css %}
-    <style>
-        .card {
-            border-radius: 15px;
-        }
+{% block title %}
+	Services
+{% endblock %}
 
-        .card-body {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-    </style>
+{% block css %}
+    <link href="{% static "service/css/index.css" %}" rel="stylesheet">
 {% endblock %}
 
 
 {% block content %}
     <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Service Name</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Provider Name</h6>
-                    <p class="card-text">Description of the service. This service offers...</p>
-                    <p class="card-text"><strong>Price: $100</strong></p>
+        {% for service in services %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="{% url "service:service_detail" service.id %}"><h5 class="card-title text-truncate">{{ service.service_name|linebreaks }}</h5></a>
+                        <h6 class="card-subtitle mb-2 text-muted text-truncate">{{ service.provider_name }}</h6>
+                        <p class="card-text ">{{ service.description|truncatechars:40 }}</p>
+                        <p class="card-text"><strong>Price: ${{ service.price }}</strong></p>
+                        <p class="card-text text-muted"><small>Added on: {{ service.published|date:"F j, Y" }}</small></p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Service Name</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Provider Name</h6>
-                    <p class="card-text">Description of the service. This service offers...</p>
-                    <p class="card-text"><strong>Price: $200</strong></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Service Name</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Provider Name</h6>
-                    <p class="card-text">Description of the service. This service offers...</p>
-                    <p class="card-text"><strong>Price: $150</strong></p>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 {% endblock %}

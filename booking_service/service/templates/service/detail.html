@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    {{ service.service_name }}
+{% endblock %}
+
+{% block css %}
+    <link href="{% static "service/css/detail.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div class="card mx-auto my-4" style="max-width: 600px;">
+        <div class="card-body">
+            <h2 class="card-title">{{ service.service_name }}</h2>
+            <h5 class="card-subtitle mb-3 text-muted">{{ service.provider_name }}</h5>
+            <p class="card-text">{{ service.description }}</p>
+            <p class="card-text"><strong>Price: ${{ service.price }}</strong></p>
+            <p class="card-text text-muted"><small>Added on: {{ service.published|date:"F j, Y" }}</small></p>
+        </div>
+    </div>
+{% endblock %}
