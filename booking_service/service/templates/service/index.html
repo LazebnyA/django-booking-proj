@@ -7,6 +7,7 @@
 
 {% block css %}
     <link href="{% static "service/css/index.css" %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "service/css/pagination.css" %}">
 {% endblock %}
 
 
@@ -16,7 +17,7 @@
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <a href="{% url "service:service_detail" service.id %}"><h5 class="card-title text-truncate">{{ service.service_name|linebreaks }}</h5></a>
+                        <a href="{{ service.get_absolute_url }}"><h5 class="card-title text-truncate">{{ service.service_name|linebreaks }}</h5></a>
                         <h6 class="card-subtitle mb-2 text-muted text-truncate">{{ service.provider_name }}</h6>
                         <p class="card-text ">{{ service.description|truncatechars:40 }}</p>
                         <p class="card-text"><strong>Price: ${{ service.price }}</strong></p>
@@ -26,4 +27,5 @@
             </div>
         {% endfor %}
     </div>
+    {% include "includes/pagination.html" with page=services %}
 {% endblock %}

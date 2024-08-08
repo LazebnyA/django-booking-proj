@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 from django.utils.text import slugify
+from django.urls import reverse
 
 
 class PublishedManager(models.Manager):
@@ -18,7 +19,7 @@ class Service(models.Model):
 
     service_name = models.CharField(max_length=100)
     provider_name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=100)
+    slug = models.SlugField(max_length=100, unique_for_date='published')
     price = models.IntegerField()
     description = models.TextField()
     published = models.DateTimeField(default=timezone.now)
@@ -57,3 +58,9 @@ class Service(models.Model):
 
     def __str__(self):
         return f"{self.service_name} by {self.provider_name}"
+
+    def get_absolute_url(self):
+        return reverse(
+            'service:service_detail',
+            args=[self.published.year, self.published.month, self.published.day, self.slug]
+        )
