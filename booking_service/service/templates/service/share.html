@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Share {{ service.service_name }}
+{% endblock %}
+
+{% block css %}
+    <link href="{% static "service/css/share.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    {% if sent %}
+    	<h2>{{ service.service_name }} has been successfully sent to {{ form.cleaned_data.to }} </h2>
+    {% else %}
+    <h2>Share <a href="{{ service.get_absolute_url }}">{{ service.service_name }}</a></h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" class="form-control" maxlength="25" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Your Email</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="to">Recipient's Email</label>
+            <input type="email" id="to" name="to" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="comments">Comments</label>
+            <textarea id="comments" name="comments" class="form-control" rows="4"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Share</button>
+    </form>
+    {% endif %}
+{% endblock %}

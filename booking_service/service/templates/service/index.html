@@ -19,7 +19,7 @@
                     <div class="card-body">
                         <a href="{{ service.get_absolute_url }}"><h5 class="card-title text-truncate">{{ service.service_name|linebreaks }}</h5></a>
                         <h6 class="card-subtitle mb-2 text-muted text-truncate">{{ service.provider_name }}</h6>
-                        <p class="card-text ">{{ service.description|truncatechars:40 }}</p>
+                        <p class="card-text text-truncate">{{ service.description }}</p>
                         <p class="card-text"><strong>Price: ${{ service.price }}</strong></p>
                         <p class="card-text text-muted"><small>Added on: {{ service.published|date:"F j, Y" }}</small></p>
                     </div>
@@ -27,5 +27,5 @@
             </div>
         {% endfor %}
     </div>
-    {% include "includes/pagination.html" with page=services %}
+    {% include "includes/pagination.html" with page=page_obj %}
 {% endblock %}

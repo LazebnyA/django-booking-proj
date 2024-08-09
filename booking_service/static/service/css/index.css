@@ -8,3 +8,8 @@
     flex-direction: column;
     justify-content: space-between;
 }
+
+a.see-more {
+    text-decoration: None;
+    margin-left: 3px;
+}

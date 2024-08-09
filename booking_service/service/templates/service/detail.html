@@ -16,7 +16,14 @@
             <h5 class="card-subtitle mb-3 text-muted">{{ service.provider_name }}</h5>
             <p class="card-text">{{ service.description }}</p>
             <p class="card-text"><strong>Price: ${{ service.price }}</strong></p>
-            <p class="card-text text-muted"><small>Added on: {{ service.published|date:"F j, Y" }}</small></p>
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <p class="card-text text-muted mb-0">
+                    <small>Added on: {{ service.published|date:"F j, Y" }}</small>
+                </p>
+                <a href="{% url 'service:service_share' service.id %}" class="btn btn-link p-0" title="Share this service">
+                    <i class="fas fa-share-alt"></i>Share
+                </a>
+            </div>
         </div>
     </div>
 {% endblock %}
