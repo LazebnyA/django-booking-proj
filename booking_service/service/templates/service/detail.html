@@ -6,24 +6,49 @@
 {% endblock %}
 
 {% block css %}
-    <link href="{% static "service/css/detail.css" %}" rel="stylesheet">
+    <link href="{% static 'service/css/detail.css' %}" rel="stylesheet">
+    <link href="{% static 'includes/css/comments.css' %}" rel="stylesheet">
+    <link href="{% static 'includes/css/similar_services.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-    <div class="card mx-auto my-4" style="max-width: 600px;">
-        <div class="card-body">
-            <h2 class="card-title">{{ service.service_name }}</h2>
-            <h5 class="card-subtitle mb-3 text-muted">{{ service.provider_name }}</h5>
-            <p class="card-text">{{ service.description }}</p>
-            <p class="card-text"><strong>Price: ${{ service.price }}</strong></p>
-            <div class="d-flex justify-content-between align-items-center w-100">
-                <p class="card-text text-muted mb-0">
-                    <small>Added on: {{ service.published|date:"F j, Y" }}</small>
-                </p>
-                <a href="{% url 'service:service_share' service.id %}" class="btn btn-link p-0" title="Share this service">
-                    <i class="fas fa-share-alt"></i>Share
-                </a>
+    <div class="service-page-container">
+        <div class="main-content">
+            <div class="service-details">
+                <div class="card main-card">
+                    <div class="card-body">
+                        <h2 class="card-title">{{ service.service_name }}</h2>
+                        <h5 class="card-subtitle mb-3 text-muted">{{ service.provider_name }}</h5>
+                        <p class="card-text">{{ service.description }}</p>
+                        <p class="card-text"><strong>Price: ${{ service.price }}</strong></p>
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <p class="card-text text-muted mb-0">
+                                <small>Added on: {{ service.published|date:"F j, Y" }}</small>
+                            </p>
+                            <a href="{% url 'service:service_share' service.id %}" class="btn btn-link p-0"
+                               title="Share this service">
+                                <i class="fas fa-share-alt"></i>Share
+                            </a>
+                        </div>
+                        <p class="card-text">
+                            <strong>
+                                Tags:
+                                {% for tag in service.tags.all %}
+                                    <a href="{% url 'service:service_list' %}?tag={{ tag.slug }}">{{ tag }}</a>
+                                    {% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </strong>
+                        </p>
+                    </div>
+                </div>
             </div>
+            <div class="similar-services">
+                <h3>Similar Services</h3>
+                {% include "includes/similar_services.html" with similar_services=similar_services %}
+            </div>
+        </div>
+        <div class="sidebar">
+            {% include "includes/comments.html" with comments=comments %}
         </div>
     </div>
 {% endblock %}

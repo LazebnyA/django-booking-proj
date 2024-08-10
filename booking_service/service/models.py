@@ -4,6 +4,10 @@ from django.conf import settings
 from django.utils.text import slugify
 from django.urls import reverse
 
+from taggit.managers import TaggableManager
+
+from comments.models import Comment
+
 
 class PublishedManager(models.Manager):
     def get_queryset(self):
@@ -41,6 +45,8 @@ class Service(models.Model):
     objects = models.Manager()
     published_objects = PublishedManager()
 
+    tags = TaggableManager()
+
     class Meta:
         db_table = 'service'
         verbose_name = 'Service'
@@ -64,3 +70,19 @@ class Service(models.Model):
             'service:service_detail',
             args=[self.published.year, self.published.month, self.published.day, self.slug]
         )
+
+
+class ServiceComment(Comment):
+    service = models.ForeignKey(
+        Service,
+        on_delete=models.CASCADE,
+        related_name='comments',
+    )
+
+    def __str__(self):
+        return (f"Comment by {self.name}. "
+                f"Email: {self.email}. "
+                f"Service: {self.service.service_name}."
+                f"Content: {self.content[:30]}. "
+                f"Created: {self.created_date}")
+

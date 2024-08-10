@@ -1,0 +1,21 @@
+<div class="similar-services-grid">
+    {% for service in similar_services %}
+        <div class="similar-service-card">
+            <h5 class="service-title"><a href="{{ service.get_absolute_url }}">{{ service.service_name }}</a></h5>
+            <h6 class="service-provider">{{ service.provider_name }}</h6>
+            <p class="service-description">{{ service.description|truncatewords:20 }}</p>
+            <p class="service-price"><strong>Price: ${{ service.price }}</strong></p>
+            <p class="service-date"><small>Added on: {{ service.published|date:"F j, Y" }}</small></p>
+            <p class="service-tags">
+                <strong>
+                    Tags:
+                    {% for tag in service.tags.all %}
+                        <a href="{% url 'service:service_list' %}?tag={{ tag.slug }}">{{ tag }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </strong>
+            </p>
+        </div>
+    {% empty %}
+        <p>There are no similar services yet.</p>
+    {% endfor %}
+</div>

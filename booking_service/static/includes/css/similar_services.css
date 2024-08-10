@@ -1,0 +1,68 @@
+.similar-services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.similar-service-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.similar-service-card:hover {
+    transform: translateY(-5px);
+}
+
+.service-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.service-title a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.service-title a:hover {
+    text-decoration: underline;
+}
+
+.service-provider {
+    font-size: 1rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+
+.service-description {
+    font-size: 0.9rem;
+    color: #444;
+    margin-bottom: 0.5rem;
+}
+
+.service-price {
+    font-size: 1rem;
+    color: #28a745;
+    margin-bottom: 0.5rem;
+}
+
+.service-date {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+
+.service-tags {
+    font-size: 0.8rem;
+}
+
+.service-tags a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.service-tags a:hover {
+    text-decoration: underline;
+}

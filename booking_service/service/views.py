@@ -1,42 +1,51 @@
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Count
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.views.decorators.http import require_POST
 from django.views.generic import ListView
+from taggit.models import Tag
 
-from service.forms import ShareServiceForm
-from service.models import Service
+from service.forms import ShareServiceForm, ServiceCommentForm
+from service.models import Service, ServiceComment
 
 
 # Class-based view
 
-class ServiceList(ListView):
-    """
-    Class-based view for listing all services available for booking.
-    """
-    queryset = Service.objects.all()
-    context_object_name = 'services'
-    paginate_by = 9
-    template_name = "service/index.html"
+# class ServiceList(ListView):
+#     """
+#     Class-based view for listing all services available for booking.
+#     """
+#     queryset = Service.objects.all()
+#     context_object_name = 'services'
+#     paginate_by = 9
+#     template_name = "service/index.html"
 
 
-# def service_list(request):
-#     services = Service.published_objects.all()
-#
-#     paginator = Paginator(services, 9)
-#     page_number = request.GET.get('page', 1)
-#
-#     try:
-#         services = paginator.page(page_number)
-#     except PageNotAnInteger:
-#         services = paginator.page(1)
-#     except EmptyPage:
-#         services = paginator.page(paginator.num_pages)
-#
-#     return render(
-#         request,
-#         'service/index.html',
-#         context={'services': services}
-#     )
+def service_list(request):
+    services = Service.published_objects.all()
+
+    tag_slug = request.GET.get('tag')
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        services = services.filter(tags__slug=tag.slug)
+
+    paginator = Paginator(services, 9)
+    page_number = request.GET.get('page', 1)
+
+    try:
+        services = paginator.page(page_number)
+    except PageNotAnInteger:
+        services = paginator.page(1)
+    except EmptyPage:
+        services = paginator.page(paginator.num_pages)
+
+    return render(
+        request,
+        'service/index.html',
+        context={'services': services}
+    )
 
 
 def service_detail(request, year, month, day, service_slug):
@@ -52,10 +61,20 @@ def service_detail(request, year, month, day, service_slug):
         published__day=day,
     )
 
+    comments = service.comments.filter(active=True)
+
+    service_tags_ids = service.tags.values_list('id', flat=True)
+    similar_services = Service.published_objects.filter(
+        tags__in=service_tags_ids
+    ).exclude(id=service.id)
+    similar_services = similar_services.annotate(
+        same_tags=Count('tags')
+    ).order_by('-same_tags', '-published')[:4]
+
     return render(
         request,
         'service/detail.html',
-        context={'service': service}
+        context={'service': service, 'comments': comments, 'similar_services': similar_services},
     )
 
 
@@ -95,3 +114,21 @@ def service_share(request, service_id):
         form = ShareServiceForm()
 
     return render(request, 'service/share.html', context={'service': service, 'form': form, 'sent': sent})
+
+
+@require_POST
+def service_comment(request, service_id):
+    service = get_object_or_404(
+        Service,
+        status=Service.Status.PUBLISHED,
+        pk=service_id,
+    )
+
+    form = ServiceCommentForm(data=request.POST)
+
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.service = service
+        comment.save()
+
+    return HttpResponseRedirect(service.get_absolute_url())

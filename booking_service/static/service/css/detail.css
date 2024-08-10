@@ -1,39 +1,53 @@
-.card {
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.service-page-container {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    margin: 0 auto;
 }
 
-.card-body {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+.main-content {
+    flex: 1;
+}
+
+.sidebar {
+    width: 300px;
+}
+
+.main-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
 }
 
 .card-title {
     font-size: 2rem;
-    margin-bottom: 10px;
+    color: #333;
+    margin-bottom: 0.5rem;
 }
 
 .card-subtitle {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
+    color: #666;
 }
 
 .card-text {
-    margin-bottom: 10px;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #444;
 }
 
-@media (max-width: 767.98px) {
-    .card {
-        margin: 10px;
-        padding: 15px;
-    }
+.btn-link {
+    color: #007bff;
+    text-decoration: none;
+}
 
-    .card-title {
-        font-size: 1.5rem;
-    }
+.btn-link:hover {
+    text-decoration: underline;
+}
 
-    .card-subtitle {
-        font-size: 1rem;
-    }
+.similar-services h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #333;
 }

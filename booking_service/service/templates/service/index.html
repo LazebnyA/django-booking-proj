@@ -22,6 +22,19 @@
                         <p class="card-text text-truncate">{{ service.description }}</p>
                         <p class="card-text"><strong>Price: ${{ service.price }}</strong></p>
                         <p class="card-text text-muted"><small>Added on: {{ service.published|date:"F j, Y" }}</small></p>
+                        {% if service.tags.all %}
+                        <p class="card-text">
+                            <strong>
+                                
+                                	
+                                Tags:
+                                {% for tag in service.tags.all %}
+                                	<a href={% url 'service:service_list' %}?tag={{ tag.slug }}>
+                                        {{ tag }}</a>{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </strong>
+                        </p>
+                        {% endif %} 
                     </div>
                 </div>
             </div>
