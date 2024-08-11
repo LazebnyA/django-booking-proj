@@ -12,6 +12,10 @@
 
 
 {% block content %}
+    <form action="{% url 'service:service_list' %}">
+        <input type="text" name="q" value="{{ request.GET.q }}" >
+        <button type="submit">Submit</button>
+    </form>
     <div class="row">
         {% for service in services %}
             <div class="col-md-4 mb-4">
@@ -25,8 +29,6 @@
                         {% if service.tags.all %}
                         <p class="card-text">
                             <strong>
-                                
-                                	
                                 Tags:
                                 {% for tag in service.tags.all %}
                                 	<a href={% url 'service:service_list' %}?tag={{ tag.slug }}>
@@ -38,6 +40,8 @@
                     </div>
                 </div>
             </div>
+        {% empty %}
+            <p>There are no services.</p>
         {% endfor %}
     </div>
     {% include "includes/pagination.html" with page=page_obj %}

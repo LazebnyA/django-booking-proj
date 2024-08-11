@@ -1,3 +1,4 @@
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
@@ -27,9 +28,21 @@ def service_list(request):
     services = Service.published_objects.all()
 
     tag_slug = request.GET.get('tag')
+    search_q = request.GET.get('q')
+
     if tag_slug:
         tag = get_object_or_404(Tag, slug=tag_slug)
         services = services.filter(tags__slug=tag.slug)
+    elif search_q:
+        search_vector = SearchVector(
+            'service_name', weight='A', config='english'
+        ) + SearchVector('description', weight='B', config='english')
+
+        search_query = SearchQuery(search_q, search_type='plain')
+        services = services.annotate(
+            search=search_vector,
+            rank=SearchRank(search_vector, search_query),
+        ).filter(rank__gte=0.3).order_by('-rank')
 
     paginator = Paginator(services, 9)
     page_number = request.GET.get('page', 1)
