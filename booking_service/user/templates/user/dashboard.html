@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block css %}
+    <link href="{% static 'user/css/dashboard.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div class="dashboard-container">
+        <div class="dashboard-card">
+            <h2 class="dashboard-title">Welcome, {{ user.username }}</h2>
+            <div class="profile-info">
+                <p><strong>Full Name:</strong> {{ user.get_full_name }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Joined:</strong> {{ user.date_joined|date:"F j, Y" }}</p>
+            </div>
+            <div class="dashboard-actions">
+                <a href="#" class="btn-dashboard">Edit Profile</a>
+                <a href="{% url 'user:password_change' %}" class="btn-dashboard">Change Password</a>
+                <a href="{% url 'user:logout' %}" class="btn-dashboard">Log Out</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

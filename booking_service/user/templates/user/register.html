@@ -1,0 +1,20 @@
+{% extends "user/base_auth.html" %}
+{% load static %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block content %}
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2 class="auth-title">Create an Account</h2>
+            <form action="{% url 'user:registration' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn-auth">Register</button>
+            </form>
+            <p class="auth-footer">Already have an account? <a href="{% url 'user:login' %}">Log in</a></p>
+        </div>
+    </div>
+{% endblock %}

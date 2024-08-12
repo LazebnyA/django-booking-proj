@@ -22,4 +22,5 @@ urlpatterns = [
     path('', include('service.urls', namespace='service')),
     path('about/', include('info.urls', namespace='info')),
     path('feedback/', include('feedback.urls', namespace='feedback')),
+    path('user/', include('user.urls', namespace='user')),
 ]
