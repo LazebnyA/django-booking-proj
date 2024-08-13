@@ -1,0 +1,24 @@
+.card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.card-header h2 {
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.form-check-label {
+    font-size: 1rem;
+}
+
+.btn {
+    padding: 0.75rem 1.25rem;
+}
+
+.edit-submit {
+    background-color: #007bff;
+    &:hover{
+        background-color: #0056b3;
+    }
+}

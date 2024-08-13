@@ -6,10 +6,11 @@ from user import views
 app_name = 'user'
 
 urlpatterns = [
-    path('register/', views.registration_view, name='registration'),
-    path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
+    path('register/', views.registration, name='registration'),
+    path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
     path('profile/', views.user_dashboard, name='dashboard'),
+    path('profile/edit/', views.edit_profile, name='edit_profile'),
 
     path('password-change/', views.UserPasswordChangeView.as_view(), name='password_change'),
     path('password-change/done/', auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),

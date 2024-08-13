@@ -1,15 +1,19 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 from taggit.models import Tag
 
-from service.forms import ShareServiceForm, ServiceCommentForm
+from service.forms import ShareServiceForm, ServiceCommentForm, CreateServiceForm
 from service.models import Service, ServiceComment
+from user.models import User
 
 
 # Class-based view
@@ -145,3 +149,25 @@ def service_comment(request, service_id):
         comment.save()
 
     return HttpResponseRedirect(service.get_absolute_url())
+
+
+@login_required
+def service_create(request):
+    user = User.objects.get(id=request.user.id)
+
+    if request.method == 'POST':
+        form = CreateServiceForm(data=request.POST)
+        if form.is_valid():
+            service = form.save(commit=False)
+            service.author = user
+            service.save()
+
+            messages.success(request, f'Service {request.POST['service_name']} created. Wait until administration '
+                                      f'will publish it.')
+            return HttpResponseRedirect(reverse('user:dashboard'))
+        else:
+            print(form.errors)
+    else:
+        form = CreateServiceForm()
+
+    return render(request, 'service/create.html', context={'form': form})
