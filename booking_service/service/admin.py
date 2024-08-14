@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Service, ServiceComment
+from .models import Service, ServiceComment, ServiceOrder
 
 
 @admin.register(Service)
@@ -19,3 +19,6 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('name', 'content', 'created_date')
     list_filter = ('active', 'created_date', 'updated_date')
     search_fields = ('name', 'email', 'content')
+
+
+admin.site.register(ServiceOrder)

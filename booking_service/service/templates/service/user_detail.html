@@ -1,0 +1,57 @@
+{% extends "dashboard.html" %}
+{% load static %}
+
+{% block title %}
+    {{ service.service_name }}
+{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link href="{% static 'service/css/provider_detail.css' %}" rel="stylesheet">
+    <link href="{% static 'includes/css/comments.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block dashboard %}
+    <div class="service-page-container">
+        <div class="main-content">
+            <div class="service-details">
+                <div class="card main-card">
+                    <div class="card-body">
+                        <h2 class="card-title">{{ service.service_name }}</h2>
+                        <p class="card-text">{{ service.description }}</p>
+                        <p class="card-text"><strong>Price: ${{ service.price }}</strong></p>
+                        <p class="card-text text-muted mb-3">
+                            <small>Added on: {{ service.published|date:"F j, Y" }}</small>
+                        </p>
+                        <p class="card-text">
+                            <strong>
+                                Tags:
+                                {% for tag in service.tags.all %}
+                                    <a href="{% url 'service:service_list' %}?tag={{ tag.slug }}">{{ tag }}</a>
+                                    {% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </strong>
+                        </p>
+                    </div>
+                    <div class="order-info">
+                        <h2>Your order message</h2>
+                        <p class="text-info">{{ order.description }}</p>
+                    </div>
+                </div>
+            
+{#                <div class="card main-card">#}
+{#                    <div class="card-body">#}
+{#                        <h2>Your orders</h2>#}
+{#                        {% for order in user.orders.all %}#}
+{#                            <div class="order-info">#}
+{#                                #}
+{#                            </div>#}
+{#                        {% empty %}#}
+{#                            <p class="text-info">There are no orders</p>#}
+{#                        {% endfor %}#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
+        </div>
+    </div>
+{% endblock %}

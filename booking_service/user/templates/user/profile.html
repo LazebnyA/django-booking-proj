@@ -1,0 +1,68 @@
+{% extends "dashboard.html" %}
+{% load static %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link href="{% static 'user/css/profile.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block dashboard %}
+    <div class="profile-container">
+        <div class="profile-header">
+            <h2>Your Profile</h2>
+        </div>
+        <div class="profile-content">
+            <div class="profile-info">
+                <h3>Personal Information</h3>
+                <p><strong>Full Name:</strong> {{ user.get_full_name }}</p>
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Joined:</strong> {{ user.date_joined|date:"F j, Y" }}</p>
+                <p><strong>Account Type:</strong>
+                    {% if user.is_provider %}
+                        Service Provider
+                    {% else %}
+                        Regular User
+                    {% endif %}
+                </p>
+            </div>
+            {% if user.is_provider %}
+                <div class="profile-services">
+                    <h3>Your Services</h3>
+                    {% if user.services.all %}
+                        <ul class="service-list">
+                            {% for service in user.services.all %}
+                                <li>
+                                    <a href="{{ service.get_absolute_url }}">{{ service.service_name }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>You haven't added any services yet.</p>
+                    {% endif %}
+                    <a href="{% url 'service:service_create' %}" class="btn btn-primary">Add New Service</a>
+                </div>
+            {% else %}
+                <div class="profile-services">
+                    <h3>Your Orders</h3>
+                    {% if user.orders.all %}
+                        <ul class="service-list">
+                            {% for order in user.orders.all %}
+                                <li>
+                                    <a href="{{ order.service.get_absolute_url }}">{{ order.service.service_name }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>You haven't ordered anything yet.</p>
+                    {% endif %}
+                    <a href="{% url 'service:service_list' %}" class="btn btn-primary">Other Services</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

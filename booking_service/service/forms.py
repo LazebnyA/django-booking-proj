@@ -1,6 +1,6 @@
 from django import forms
 
-from service.models import ServiceComment, Service
+from service.models import ServiceComment, Service, ServiceOrder
 
 
 class ShareServiceForm(forms.Form):
@@ -20,3 +20,9 @@ class CreateServiceForm(forms.ModelForm):
     class Meta:
         model = Service
         fields = ('service_name', 'provider_name', 'price', 'description', 'status', 'tags')
+
+
+class OrderServiceForm(forms.ModelForm):
+    class Meta:
+        model = ServiceOrder
+        fields = ('email', 'phone_number', 'description')

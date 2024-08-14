@@ -86,3 +86,34 @@ class ServiceComment(Comment):
                 f"Content: {self.content[:30]}. "
                 f"Created: {self.created_date}")
 
+
+class ServiceOrder(models.Model):
+    service = models.ForeignKey(
+        Service,
+        on_delete=models.CASCADE,
+        related_name='orders',
+    )
+
+    client = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='orders',
+    )
+
+    created_date = models.DateTimeField(auto_now_add=True)
+    phone_number = models.CharField(null=True, blank=True, max_length=20)
+    email = models.EmailField()
+    description = models.TextField()
+
+    class Meta:
+        db_table = 'service_order'
+        verbose_name = 'Service Order'
+        verbose_name_plural = 'Service Orders'
+        ordering = ['-created_date']
+        unique_together = [['service', 'client']]
+
+    def __str__(self):
+        return (f"Order by {self.client}. "
+                f"Email: {self.email}. ")
+
+

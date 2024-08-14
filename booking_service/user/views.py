@@ -92,4 +92,4 @@ def edit_profile(request):
 
 @login_required
 def user_dashboard(request):
-    return render(request, 'user/dashboard.html')
+    return render(request, 'user/profile.html')

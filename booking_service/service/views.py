@@ -11,8 +11,8 @@ from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 from taggit.models import Tag
 
-from service.forms import ShareServiceForm, ServiceCommentForm, CreateServiceForm
-from service.models import Service, ServiceComment
+from service.forms import ShareServiceForm, ServiceCommentForm, CreateServiceForm, OrderServiceForm
+from service.models import Service, ServiceComment, ServiceOrder
 from user.models import User
 
 
@@ -79,6 +79,16 @@ def service_detail(request, year, month, day, service_slug):
     )
 
     comments = service.comments.filter(active=True)
+    if request.user == service.author:
+        print(1)
+        return render(
+            request,
+            'service/provider_detail.html',
+            {'service': service, 'comments': comments}
+        )
+    elif request.user.is_authenticated and service.orders.filter(client_id=request.user.id).exists():
+        order = service.orders.get(client_id=request.user.id)
+        return render(request, 'service/user_detail.html', {'service': service, 'order': order})
 
     service_tags_ids = service.tags.values_list('id', flat=True)
     similar_services = Service.published_objects.filter(
@@ -171,3 +181,45 @@ def service_create(request):
         form = CreateServiceForm()
 
     return render(request, 'service/create.html', context={'form': form})
+
+
+@login_required
+def service_update(request, service_id):
+    pass
+
+
+@login_required
+def service_delete(request, service_id):
+    pass
+
+
+@login_required
+def service_contact(request, service_id):
+    service = get_object_or_404(
+        Service,
+        status=Service.Status.PUBLISHED,
+        pk=service_id,
+    )
+
+    user = get_object_or_404(User, id=request.user.id)
+
+    if request.method == 'POST':
+        form = OrderServiceForm(data=request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.service = service
+            order.client = user
+            order.save()
+
+            messages.success(request,
+                             (f'Service {service.service_name} is successfully ordered. '
+                              f'Wait until provider will contact you'))
+        else:
+            print(form.errors)
+
+        return HttpResponseRedirect(service.get_absolute_url())
+
+    else:
+        form = OrderServiceForm()
+
+    return render(request, 'service/order.html', context={'service': service, 'form': form})
