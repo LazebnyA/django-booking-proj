@@ -1,0 +1,129 @@
+/* feedback.css */
+
+.feedback-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.feedback-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.feedback-header h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.feedback-header p {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.feedback-form-container {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.feedback-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.feedback-form .form-label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.feedback-form .form-control {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.feedback-form .form-control:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.feedback-form .is-invalid {
+    border-color: #dc3545;
+}
+
+.feedback-form .invalid-feedback {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+
+.feedback-benefits {
+    background-color: #e9ecef;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.feedback-benefits h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.feedback-benefits ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.feedback-benefits li {
+    margin-bottom: 0.5rem;
+    color: #555;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.feedback-benefits li:before {
+    content: "✓";
+    color: #28a745;
+    position: absolute;
+    left: 0;
+}
+
+@media (max-width: 768px) {
+    .feedback-container {
+        padding: 1rem;
+    }
+
+    .feedback-header h1 {
+        font-size: 2rem;
+    }
+
+    .feedback-form-container {
+        padding: 1.5rem;
+    }
+}

@@ -1,38 +1,43 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}
-    Feedback
-{% endblock %}
+{% block title %}Feedback - Service Marketplace{% endblock %}
 
 {% block css %}
-    <link href="{% static "feedback/css/feedback.css" %}" rel="stylesheet">
+    <link href="{% static 'feedback/css/feedback.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-    <h1 class="display-4 text-center mb-4">Feedback</h1>
-    <p class="text-center mb-4">We value your feedback. Please let us know what you think about our platform and how we
-        can improve.</p>
+<div class="feedback-container">
+    <header class="feedback-header">
+        <h1>We Value Your Feedback</h1>
+        <p>Help us improve our platform by sharing your thoughts and experiences.</p>
+    </header>
 
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <form action="{% url 'feedback:feedback' %}" method="post" novalidate>
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label for="text_id" class="form-label">Your Feedback</label>
-                            <textarea name="text" id="text_id"
-                                      class="form-control {% if form.text.errors %}is-invalid{% endif %}"
-                                      rows="5"></textarea>
-                            {% for error in form.text.errors %}
-                                <div class="invalid-feedback">{{ error }}</div>
-                            {% endfor %}
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-3 w-100">Submit</button>
-                    </form>
-                </div>
+    <div class="feedback-form-container">
+        <form action="{% url 'feedback:feedback' %}" method="post" novalidate class="feedback-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="text_id" class="form-label">Your Feedback</label>
+                <textarea name="text" id="text_id" 
+                          class="form-control {% if form.text.errors %}is-invalid{% endif %}" 
+                          rows="5" placeholder="Tell us what you think..."></textarea>
+                {% for error in form.text.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
             </div>
-        </div>
+            <button type="submit" class="btn btn-primary submit-btn">Submit Feedback</button>
+        </form>
     </div>
+
+    <div class="feedback-benefits">
+        <h2>Why Your Feedback Matters</h2>
+        <ul>
+            <li>Helps us improve our services</li>
+            <li>Shapes the future of our platform</li>
+            <li>Ensures we meet your needs</li>
+            <li>Contributes to a better user experience for all</li>
+        </ul>
+    </div>
+</div>
 {% endblock %}

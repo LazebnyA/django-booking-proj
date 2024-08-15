@@ -8,11 +8,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.decorators.http import require_POST
-from django.views.generic import ListView
 from taggit.models import Tag
 
 from service.forms import ShareServiceForm, ServiceCommentForm, CreateServiceForm, OrderServiceForm
-from service.models import Service, ServiceComment, ServiceOrder
+from service.models import Service
 from user.models import User
 
 

@@ -1,104 +1,88 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}
-    Dashboard
-{% endblock %}
+{% block title %}Dashboard{% endblock %}
 
 {% block css %}
     <link href="{% static 'user/css/dashboard.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
-                <div class="position-sticky">
-                    <div class="sidebar-header text-center py-3">
-                        <h3>{{ user.username }}</h3>
-                    </div>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{% url 'user:dashboard' %}">
-                                <i class="fas fa-user"></i> Profile
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'user:edit_profile' %}">
-                                <i class="fas fa-edit"></i> Edit Profile
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'user:password_change' %}">
-                                <i class="fas fa-key"></i> Change Password
-                            </a>
-                        </li>
-                    </ul>
-                    {% if user.is_provider %}
-                        <div class="sidebar-header text-center py-3">
-                            <h4>Your services</h4>
-                        </div>
-                        <ul class="nav flex-column">
-                        <li class="nav-item">
-                        <a class="nav-link" href="{% url 'service:service_create' %}">
+<div class="dashboard-container">
+    <!-- Sidebar -->
+    <nav id="sidebarMenu" class="dashboard-sidebar">
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <h3>{{ user.username }}</h3>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="menu-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                    <a href="{% url 'user:dashboard' %}">
+                        <i class="fas fa-user"></i> Profile
+                    </a>
+                </li>
+                <li class="menu-item {% if request.resolver_match.url_name == 'edit_profile' %}active{% endif %}">
+                    <a href="{% url 'user:edit_profile' %}">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </a>
+                </li>
+                <li class="menu-item {% if request.resolver_match.url_name == 'password_change' %}active{% endif %}">
+                    <a href="{% url 'user:password_change' %}">
+                        <i class="fas fa-key"></i> Change Password
+                    </a>
+                </li>
+            </ul>
+            
+            {% if user.is_provider %}
+                <div class="sidebar-header">
+                    <h4>Your Services</h4>
+                </div>
+                <ul class="sidebar-menu">
+                    <li class="menu-item">
+                        <a href="{% url 'service:service_create' %}">
                             <i class="fas fa-plus-circle"></i> Add Service
                         </a>
-                        {% for service in user.services.all %}
-                            <a class="nav-link" href="{{ service.get_absolute_url }}">
+                    </li>
+                    {% for service in user.services.all %}
+                        <li class="menu-item">
+                            <a href="{{ service.get_absolute_url }}">
                                 <i class="fas fa-info-circle"></i> {{ service.service_name }}
                             </a>
-                        {% empty %}
-                            <p>No services</p>
-                        {% endfor %}
-                    {% else %}
-                        <div class="sidebar-header text-center py-3">
-                            <h3>Your orders</h3>
-                        </div>
-                        <ul class="nav flex-column">
-                        {% for order in user.orders.all %}
-                            <li class="nav-item">
-                            <a class="nav-link" href="{{ order.service.get_absolute_url }}">
-                                <i class="fas fa-info-circle"></i> {{ order.service.service_name }}
-                            </a>
-                            </li>
-                        {% empty %}
-                            <p>No services</p>
-                        {% endfor %}
-                        </ul>
-                    {% endif %}
-                    </li>
-                    </ul>
-                    <hr>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'user:logout' %}">
-                                <i class="fas fa-sign-out-alt"></i> Log Out
+                        </li>
+                    {% empty %}
+                        <li class="menu-item"><span class="empty-message">No services yet</span></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div class="sidebar-header">
+                    <h4>Your Orders</h4>
+                </div>
+                <ul class="sidebar-menu">
+                    {% for order in user.orders.all %}
+                        <li class="menu-item">
+                            <a href="{{ order.service.get_absolute_url }}">
+                                <i class="fas fa-shopping-cart"></i> {{ order.service.service_name }}
                             </a>
                         </li>
-                    </ul>
-                </div>
-            </nav>
-
-            <!-- Main Content Area -->
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                {#            <div class="content-header">#}
-                {#                <h2>Dashboard</h2>#}
-                {#                <p>Welcome, {{ user.get_full_name }}!</p>#}
-                {#            </div>#}
-                {#            <div class="content-body">#}
-                {#                <p><strong>Email:</strong> {{ user.email }}</p>#}
-                {#                <p><strong>Joined:</strong> {{ user.date_joined|date:"F j, Y" }}</p>#}
-                {#                {% if user.is_provider %}#}
-                {#                    <p><strong>Provider Status:</strong> Service Provider</p>#}
-                {#                {% else %}#}
-                {#                    <p><strong>Provider Status:</strong> Regular User</p>#}
-                {#                {% endif %}#}
-                {#            </div>#}
-                {% block dashboard %}
-
-                {% endblock %}
-            </main>
+                    {% empty %}
+                        <li class="menu-item"><span class="empty-message">No orders yet</span></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            <div class="sidebar-footer">
+                <a href="{% url 'user:logout' %}" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Log Out
+                </a>
+            </div>
         </div>
-    </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-main">
+        {% block dashboard %}
+        <!-- Default dashboard content goes here -->
+        {% endblock %}
+    </main>
+</div>
 {% endblock %}

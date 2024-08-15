@@ -1,11 +1,66 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}
-    About
+{% block title %}About Service Marketplace{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'info/css/about.css' %}">
 {% endblock %}
 
 {% block content %}
-    <h1>About Service Marketplace</h1>
-    <p>Service Marketplace is a platform where you can find and offer various services. Our mission is to connect
-        service providers with customers in an easy and efficient way.</p>
+<div class="about-container">
+    <header class="about-header">
+        <h1>About Service Marketplace</h1>
+        <p class="tagline">Connecting Talent with Opportunity</p>
+    </header>
+
+    <section class="about-content">
+        <div class="mission-statement">
+            <h2>Our Mission</h2>
+            <p>Service Marketplace is a dynamic platform designed to bridge the gap between skilled service providers and clients seeking quality services. We strive to create a seamless, efficient, and trustworthy ecosystem where talent meets opportunity.</p>
+        </div>
+
+        <div class="features">
+            <h2>What We Offer</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <i class="fas fa-handshake"></i>
+                    <h3>Easy Connections</h3>
+                    <p>Effortlessly connect with skilled professionals or find your next client.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Secure Transactions</h3>
+                    <p>Our platform ensures safe and transparent financial exchanges.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-star"></i>
+                    <h3>Quality Assurance</h3>
+                    <p>Verified reviews and ratings to help you make informed decisions.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-globe"></i>
+                    <h3>Global Reach</h3>
+                    <p>Access a worldwide network of services and opportunities.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="testimonial">
+            <blockquote>
+                "Service Marketplace has revolutionized how I find clients. It's user-friendly, secure, and has greatly expanded my business reach."
+            </blockquote>
+            - Jane Doe, Graphic Designer
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2>Ready to Get Started?</h2>
+        <p>Join our community of service providers and clients today!</p>
+        <div class="cta-buttons">
+            <a href="{% url 'user:registration' %}" class="btn btn-primary">Sign Up</a>
+            <a href="{% url 'service:service_list' %}" class="btn btn-secondary">Browse Services</a>
+        </div>
+    </section>
+</div>
 {% endblock %}

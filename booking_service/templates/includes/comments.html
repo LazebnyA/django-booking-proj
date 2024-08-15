@@ -1,21 +1,26 @@
+<!-- comments.html -->
 <div class="comments-section">
     <h3>Comments</h3>
     <div class="comment-form">
         <form action="{% url 'service:service_comment' service.id %}" method="POST">
             {% csrf_token %}
-            <input type="text" name="name" class="form-control" placeholder="Name" required>
-            <input type="email" name="email" class="form-control" placeholder="Email" required>
-            <textarea name="content" class="form-control" rows="3" placeholder="Your Comment" required></textarea>
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <textarea name="content" rows="3" placeholder="Your Comment" required></textarea>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
     <div class="existing-comments">
         {% for comment in comments %}
             <div class="comment">
-                <p class="comment-author"><strong>{{ comment.name }}</strong></p>
-                <p class="comment-date"><small class="text-muted">{{ comment.created_at|date:"F j, Y, g:i a" }}</small></p>
+                <div class="comment-header">
+                    <p class="comment-author">{{ comment.name }}</p>
+                    <p class="comment-date">{{ comment.created_at|date:"F j, Y, g:i a" }}</p>
+                </div>
                 <p class="comment-content">{{ comment.content }}</p>
             </div>
+        {% empty %}
+            <p class="no-comments">No comments yet. Be the first to comment!</p>
         {% endfor %}
     </div>
 </div>

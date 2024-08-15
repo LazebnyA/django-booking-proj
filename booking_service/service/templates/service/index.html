@@ -2,47 +2,48 @@
 {% load static %}
 
 {% block title %}
-	Services
+    Services
 {% endblock %}
 
 {% block css %}
-    <link href="{% static "service/css/index.css" %}" rel="stylesheet">
-    <link rel="stylesheet" href="{% static "service/css/pagination.css" %}">
+    <link href="{% static 'service/css/index.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'includes/css/pagination.css' %}">
 {% endblock %}
 
-
 {% block content %}
-    <form action="{% url 'service:service_list' %}">
-        <input type="text" name="q" value="{{ request.GET.q }}" >
-        <button type="submit">Submit</button>
-    </form>
-    <div class="row">
-        {% for service in services %}
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <a href="{{ service.get_absolute_url }}"><h5 class="card-title text-truncate">{{ service.service_name|linebreaks }}</h5></a>
-                        <h6 class="card-subtitle mb-2 text-muted text-truncate">{{ service.provider_name }}</h6>
-                        <p class="card-text text-truncate">{{ service.description }}</p>
-                        <p class="card-text"><strong>Price: ${{ service.price }}</strong></p>
-                        <p class="card-text text-muted"><small>Added on: {{ service.published|date:"F j, Y" }}</small></p>
-                        {% if service.tags.all %}
-                        <p class="card-text">
-                            <strong>
-                                Tags:
-                                {% for tag in service.tags.all %}
-                                	<a href={% url 'service:service_list' %}?tag={{ tag.slug }}>
-                                        {{ tag }}</a>{% if not forloop.last %}, {% endif %}
-                                {% endfor %}
-                            </strong>
-                        </p>
-                        {% endif %} 
+    <div class="service-page-container">
+        <div class="main-content">
+            <form action="{% url 'service:service_list' %}" class="search-form">
+                <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Search services...">
+                <button type="submit">Search</button>
+            </form>
+            
+            <div class="service-grid">
+                {% for service in services %}
+                    <div class="service-card">
+                        <div class="service-card-content">
+                            <h3 class="service-title">
+                                <a href="{{ service.get_absolute_url }}">{{ service.service_name }}</a>
+                            </h3>
+                            <p class="service-provider">{{ service.provider_name }}</p>
+                            <p class="service-description">{{ service.description|truncatechars:100 }}</p>
+                            <p class="service-price">${{ service.price }}</p>
+                            <p class="service-date">Added on: {{ service.published|date:"F j, Y" }}</p>
+                            {% if service.tags.all %}
+                                <div class="service-tags">
+                                    {% for tag in service.tags.all %}
+                                        <a href="{% url 'service:service_list' %}?tag={{ tag.slug }}" class="tag">{{ tag }}</a>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
+                {% empty %}
+                    <p class="no-services">There are no services available.</p>
+                {% endfor %}
             </div>
-        {% empty %}
-            <p>There are no services.</p>
-        {% endfor %}
+            
+            {% include "includes/pagination.html" with page=services %}
+        </div>
     </div>
-    {% include "includes/pagination.html" with page=page_obj %}
 {% endblock %}

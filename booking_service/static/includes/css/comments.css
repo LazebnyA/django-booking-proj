@@ -1,3 +1,5 @@
+/* comments.css */
+
 .comments-section {
     background-color: #f8f9fa;
     border-radius: 8px;
@@ -22,6 +24,7 @@
     padding: 0.5rem;
     border: 1px solid #ced4da;
     border-radius: 4px;
+    font-size: 0.9rem;
 }
 
 .comment-form button {
@@ -40,18 +43,31 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
 .comment-author {
     font-weight: bold;
-    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+    color: #333;
 }
 
 .comment-date {
     font-size: 0.8rem;
     color: #6c757d;
-    margin-bottom: 0.5rem;
 }
 
 .comment-content {
     font-size: 0.9rem;
     line-height: 1.4;
+    color: #444;
+}
+
+.no-comments {
+    font-style: italic;
+    color: #6c757d;
 }
